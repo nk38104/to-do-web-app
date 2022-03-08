@@ -22,14 +22,17 @@ app.get("/", function(req, res) {
 
 app.post("/", function(req, res) {
     const { newItem, list } = req.body;
+    let redirectPath = (list === "Work") ? "/work" : "/";
 
-    if (list === "Work") {
-        workTasks.push(newItem);
-        res.redirect("/work");
-    } else {
-        tasks.push(newItem);    
-        res.redirect("/");
+    if(newItem.length > 0) {
+        if (list === "Work") {
+            workTasks.push(newItem);
+        } else {
+            tasks.push(newItem);    
+        }
     }
+    
+    res.redirect(redirectPath);
 });
 
 
