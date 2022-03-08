@@ -1,7 +1,7 @@
 
 const express = require("express");
 const bodyParser = require("body-parser");
-const date = require("./modules/date");
+const date = require("../modules/date");
 
 
 const app = express();
