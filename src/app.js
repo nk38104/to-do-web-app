@@ -11,13 +11,31 @@ app.set("view engine", "ejs");
 
 
 // ---- DATABASE ----
-mongoose.connect("mongodb://localhost:27017/todoDB", { userNewUrlParser: true });
+mongoose.connect("mongodb://localhost:27017/todoDB", { useNewUrlParser: true });
 
 const itemsSchema = {
     name: { type: String }
 };
 
 const Item = mongoose.model("Item", itemsSchema);
+
+Item.insertMany([
+    {
+        name: "Welcome to your to-do list!"
+    },
+    {
+        name: "Hit the + button to add a new item."
+    },
+    {
+        name: "<-- Hit this to delete an item."
+    }
+], function(err) {
+    if(err) {
+        console.log(err);
+    } else {
+        console.log("Sucessfully saved default items to database.");
+    }
+});
 
 // ------------------
 
