@@ -1,17 +1,25 @@
 
 const express = require("express");
 const bodyParser = require("body-parser");
+const mongoose = require("mongoose");
 const date = require("../modules/date");
-
 
 const app = express();
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static("public"));
 app.set("view engine", "ejs");
 
-let tasks = [ "Buy food", "Cook food", "Eat food" ];
-let workTasks = [];
 
+// ---- DATABASE ----
+mongoose.connect("mongodb://localhost:27017/todoDB", { userNewUrlParser: true });
+
+const itemsSchema = {
+    name: { type: String }
+};
+
+const Item = mongoose.model("Item", itemsSchema);
+
+// ------------------
 
 app.get("/", function(req, res) {
     res.render("list", { 
