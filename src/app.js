@@ -19,30 +19,36 @@ const itemsSchema = {
 
 const Item = mongoose.model("Item", itemsSchema);
 
-Item.insertMany([
-    {
-        name: "Welcome to your to-do list!"
-    },
-    {
-        name: "Hit the + button to add a new item."
-    },
-    {
-        name: "<-- Hit this to delete an item."
-    }
-], function(err) {
-    if(err) {
-        console.log(err);
-    } else {
-        console.log("Sucessfully saved default items to database.");
-    }
-});
+// Item.insertMany([
+//     {
+//         name: "Welcome to your to-do list!"
+//     },
+//     {
+//         name: "Hit the + button to add a new item."
+//     },
+//     {
+//         name: "<-- Hit this to delete an item."
+//     }
+// ], function(err) {
+//     if(err) {
+//         console.log(err);
+//     } else {
+//         console.log("Sucessfully saved default items to database.");
+//     }
+// });
 
 // ------------------
 
 app.get("/", function(req, res) {
-    res.render("list", { 
-        listTitle: date.getDate(),
-        tasks: tasks
+    Item.find({}, function(err, tasks) {
+        if(err) {
+            console.log(err);
+        } else {
+            res.render("list", { 
+                listTitle: date.getDate(),
+                tasks: tasks
+            });
+        }
     });
 });
 
