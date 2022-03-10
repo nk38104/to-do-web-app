@@ -13,12 +13,14 @@
     </div>
 
     <div class="box">
-        <% tasks.forEach(task => { %>
-            <div class="item">
-                <input type="checkbox">
-                <p> <%= task.name %> </p>
-            </div>
-        <% }); %>
+        <form action="/delete" method="POST">
+            <% tasks.forEach(task => { %>
+                <div class="item">
+                    <input type="checkbox" onChange="this.form.submit()" name="checkbox" value="<%= task._id %>">
+                    <p> <%= task.name %> </p>
+                </div>
+            <% }); %>
+        </form>
 
         <form action="/" method="POST" class="item">
             <input type="text" name="newItemName" placeholder="Enter new task..." autocomplete="off">

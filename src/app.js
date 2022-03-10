@@ -66,12 +66,22 @@ app.post("/", function(req, res) {
         if (list === "Work") {
             workTasks.push(newItem);
         } else {
-            // tasks.push(newItem);
             newItem.save();
         }
     }
     
     res.redirect(redirectPath);
+});
+
+app.post("/delete", function(req, res) {
+    taskId = req.body.checkbox;
+
+    Item.findByIdAndRemove({_id: taskId}, function(err) {
+        logMessage = (err) ? err : "Successfully deleted task.";
+        console.log(logMessage);
+    });
+    
+    res.redirect("/");
 });
 
 
