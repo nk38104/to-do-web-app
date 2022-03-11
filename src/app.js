@@ -13,7 +13,7 @@ app.set("view engine", "ejs");
 
 
 // ---- DATABASE ----
-mongoose.connect(`mongodb+srv://admin-nk:${mongoConfig.password}@clustertodo.5chyi.mongodb.net/todoDB`, { useNewUrlParser: true });
+mongoose.connect(`mongodb+srv://admin-nk:TD6DVna9UaNonPjr@clustertodo.5chyi.mongodb.net/todoDB`, { useNewUrlParser: true });
 
 const itemsSchema = {
     name: { type: String }
