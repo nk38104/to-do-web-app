@@ -61,18 +61,22 @@ app.get("/", function(req, res) {
 });
 
 app.post("/", function(req, res) {
-    const { newItemName, list } = req.body;
-    let redirectPath = (list === "Work") ? "/work" : "/";
+    const { newItemName, listName } = req.body;
+    const isHomePage = listName === date.getDate();
+    let redirectPath = (isHomePage) ? "/" : `/${listName}`;
 
     if(newItemName.length > 0) {
         const newItem = new Item({
             name: newItemName
         });
 
-        if (list === "Work") {
-            workTasks.push(newItem);
-        } else {
+        if (isHomePage) {
             newItem.save();
+        } else {
+            List.findOne({ name: listName }, function(err, foundList) {
+                foundList.items.push(newItem);
+                foundList.save();
+            });
         }
     }
     
@@ -112,11 +116,6 @@ app.post("/delete", function(req, res) {
 
     res.redirect("/");
 });
-
-
-// app.get("/work", function(req, res) {
-//     res.render("list", { listTitle: "Work List", tasks: workTasks });
-// });
 
 
 app.listen(3000, function() {
