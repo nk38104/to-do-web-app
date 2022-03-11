@@ -4,6 +4,7 @@
   "description": "Simple To Do List web application.",
   "main": "app.js",
   "scripts": {
+    "start": "node src/app.js",
     "dev": "nodemon src/app.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
