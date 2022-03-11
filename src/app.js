@@ -4,7 +4,6 @@ const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
 const _ = require("lodash");
 const date = require("../modules/date");
-const mongoConfig = require("./config/db_config");
 
 const app = express();
 app.use(bodyParser.urlencoded({ extended: true }));
