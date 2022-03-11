@@ -19,6 +19,12 @@ const itemsSchema = {
 
 const Item = mongoose.model("Item", itemsSchema);
 
+const listSchema = {
+    name: String,
+    items: [itemsSchema]
+};
+
+const List = mongoose.model("List", listSchema);
 // ------------------
 
 function seedData() {
@@ -73,6 +79,29 @@ app.post("/", function(req, res) {
     res.redirect(redirectPath);
 });
 
+app.get("/:customListName", function(req, res) {
+    const customListName = req.params.customListName;
+    
+    List.findOne({ name: customListName }, function(err, foundList) {
+        if (!err) {
+            if (!foundList) {
+                const list = new List({
+                    name: customListName,
+                    items: []
+                });
+                
+                list.save();
+                res.redirect(`/${customListName}`);
+            } else {
+                res.render("list", {
+                    listTitle: foundList.name,
+                    tasks: foundList.items
+                });
+            }
+        }
+    });
+});
+
 app.post("/delete", function(req, res) {
     taskId = req.body.checkbox;
 
@@ -80,14 +109,15 @@ app.post("/delete", function(req, res) {
         logMessage = (err) ? err : "Successfully deleted task.";
         console.log(logMessage);
     });
-    
+
     res.redirect("/");
 });
 
 
-app.get("/work", function(req, res) {
-    res.render("list", { listTitle: "Work List", tasks: workTasks });
-});
+// app.get("/work", function(req, res) {
+//     res.render("list", { listTitle: "Work List", tasks: workTasks });
+// });
+
 
 app.listen(3000, function() {
     console.log("Server is listening on port 3000.");
