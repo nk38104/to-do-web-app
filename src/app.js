@@ -44,6 +44,10 @@ function seedData() {
     });
 }
 
+function isHomePage(listName) {
+    return listName === date.getDate();
+}
+
 app.get("/", function(req, res) {
     Item.find({}, function(err, tasks) {
         if(err) {
@@ -62,15 +66,14 @@ app.get("/", function(req, res) {
 
 app.post("/", function(req, res) {
     const { newItemName, listName } = req.body;
-    const isHomePage = listName === date.getDate();
-    let redirectPath = (isHomePage) ? "/" : `/${listName}`;
+    const redirectPath = (isHomePage(listName)) ? "/" : `/${listName}`;
 
     if(newItemName.length > 0) {
         const newItem = new Item({
             name: newItemName
         });
 
-        if (isHomePage) {
+        if (isHomePage(listName)) {
             newItem.save();
         } else {
             List.findOne({ name: listName }, function(err, foundList) {
@@ -107,14 +110,23 @@ app.get("/:customListName", function(req, res) {
 });
 
 app.post("/delete", function(req, res) {
-    taskId = req.body.checkbox;
+    const checkedTaskId = req.body.checkbox;
+    const listName = req.body.listName;
+    const redirectPath = (isHomePage(listName)) ? "/" : `/${listName}`;
 
-    Item.findByIdAndRemove({_id: taskId}, function(err) {
-        logMessage = (err) ? err : "Successfully deleted task.";
-        console.log(logMessage);
-    });
+    if (isHomePage(listName)) {
+        Item.findByIdAndRemove({_id: checkedTaskId}, function(err) {
+            const logMessage = (err) ? err : "Successfully deleted task.";
+            console.log(logMessage);
+        });
+    } else {
+        List.findOneAndUpdate({ name: listName }, {$pull: { items: { _id: checkedTaskId }}}, function(err) {
+            logMessage = (err) ? err : "Successfully deleted task.";
+            console.log(logMessage);
+        });
+    }
 
-    res.redirect("/");
+    res.redirect(redirectPath);
 });
 
 
