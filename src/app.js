@@ -4,6 +4,7 @@ const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
 const _ = require("lodash");
 const date = require("../modules/date");
+const mongoConfig = require("./config/db_config");
 
 const app = express();
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -12,7 +13,7 @@ app.set("view engine", "ejs");
 
 
 // ---- DATABASE ----
-mongoose.connect("mongodb://localhost:27017/todoDB", { useNewUrlParser: true });
+mongoose.connect(`mongodb+srv://admin-nk:${mongoConfig.password}@clustertodo.5chyi.mongodb.net/todoDB`, { useNewUrlParser: true });
 
 const itemsSchema = {
     name: { type: String }
