@@ -1,9 +1,9 @@
-
 const express = require("express");
 const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
 const _ = require("lodash");
 const date = require("../modules/date");
+
 
 const app = express();
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -57,7 +57,7 @@ app.get("/", function(req, res) {
             seedData();
             res.redirect("/");
         } else {
-            res.render("list", {
+            res.render("home", {
                 listTitle: date.getDate(),
                 tasks: tasks
             });
@@ -135,3 +135,12 @@ app.listen(process.env.PORT || 3000, function() {
     // console.log("Server is listening on port 3000.");
     console.log("Server started successfully...");
 });
+
+{/* <a href="/compose">New entry</a>
+<% posts.forEach((post) => { %>
+    <h3><%= post.title %></h3>
+     <p><%= post.content.substring(100); %>...</p>
+    <form action="/post" method="POST">
+        <button name="postId" value=<%= post._id %>>Read more</button>
+    </form>
+<% }) %> */}
